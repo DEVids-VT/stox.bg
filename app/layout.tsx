@@ -9,12 +9,12 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin", "cyrillic"],
+  subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin", "cyrillic"],
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {

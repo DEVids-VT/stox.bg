@@ -11,8 +11,6 @@ type Article = {
 };
 
 export function ArticleCards() {
-  const [imageError, setImageError] = useState<Record<number, boolean>>({});
-
   const articles: Article[] = [
     {
       tag: "Пазарен обзор",

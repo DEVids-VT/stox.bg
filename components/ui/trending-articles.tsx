@@ -10,8 +10,6 @@ type TrendingArticle = {
 };
 
 export function TrendingArticles() {
-  const [imageError, setImageError] = useState<Record<number, boolean>>({});
-
   const articles: TrendingArticle[] = [
     {
       category: "Анализ на продажби",

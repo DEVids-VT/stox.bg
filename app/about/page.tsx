@@ -40,7 +40,7 @@ export default function AboutPage() {
           <div className="lg:pr-4">
             <div className="max-w-xl text-base leading-7 text-muted-foreground lg:max-w-lg">
               <p>
-                Stox.bg е създаден за хора, които не питат "какво е S&P 500", а "защо пада тази седмица".
+                Stox.bg е създаден за хора, които не питат &quot;какво е S&P 500&quot;, а &quot;защо пада тази седмица&quot;.
                 Предлагаме професионални анализи, разбити на кратки статии, с готови prompt-ове за по-задълбочени разговори с AI.
               </p>
               <ul role="list" className="mt-8 space-y-8 text-muted-foreground">
@@ -68,7 +68,7 @@ export default function AboutPage() {
               </ul>
               <p className="mt-8">
                 С помощта на Stox.bg, инвеститорите могат да се фокусират върху вземането на информирани решения,
-                вместо да губят часове в търсене на качествена информация. Няма досадни мнения. Няма "гурута". 
+                вместо да губят часове в търсене на качествена информация. Няма досадни мнения. Няма &quot;гурута&quot;. 
                 Само добре подбрана и прецизно обработена информация.
               </p>
               <h2 className="mt-16 text-2xl font-bold tracking-tight text-foreground">Накратко. Разбрано. На време.</h2>

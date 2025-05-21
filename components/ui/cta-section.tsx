@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export function CTASection() {
-  const [imageError, setImageError] = useState(false);
-  
   return (
     <section className="py-16 bg-card">
       <div className="mx-auto max-w-6xl px-6">

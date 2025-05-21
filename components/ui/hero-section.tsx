@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export function HeroSection() {
-  const [imageError, setImageError] = useState(false);
+  const [, setImageError] = useState(false);
 
   return (
     <section className="relative overflow-hidden bg-card py-20 px-6 sm:py-32 lg:px-8">
