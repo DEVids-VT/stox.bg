@@ -20,21 +20,22 @@ export function createMetadata({
   noIndex = false,
   canonical,
 }: MetadataProps): Metadata {
-  const siteName = 'Your Company Name';
-  const fallbackTitle = 'Next.js SSR Template | Your Company';
-  const fallbackDescription = 'A high-performance SEO-optimized Next.js template with SSR capabilities';
+  const siteName = 'Stox.bg';
+  const fallbackTitle = 'Stox.bg | Инвеститорският интернет. На едно място.';
+  const fallbackDescription = 'Платформа за инвеститори с актуални анализи за акции, компании, икономика и геополитика. Сбити текстове с готови AI prompt-ове за по-задълбочени разговори.';
   const fallbackImage = '/images/og-image.png';
   
   const fullTitle = title ? `${title} | ${siteName}` : fallbackTitle;
   
   const metaKeywords = [
-    'Next.js',
-    'SSR',
-    'React',
-    'Template',
-    'SEO',
-    'TypeScript',
-    'Performance',
+    'инвестиции',
+    'акции',
+    'пазари',
+    'анализи',
+    'икономика',
+    'геополитика',
+    'финанси',
+    'AI',
     ...keywords,
   ];
 
@@ -42,7 +43,7 @@ export function createMetadata({
     title: fullTitle,
     description: description || fallbackDescription,
     keywords: metaKeywords,
-    metadataBase: new URL('https://yourwebsite.com'),
+    metadataBase: new URL('https://stox.bg'),
     alternates: {
       canonical: canonical,
     },
@@ -67,15 +68,15 @@ export function createMetadata({
           alt: fullTitle,
         },
       ],
-      locale: 'en_US',
+      locale: 'bg_BG',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
       title: fullTitle,
       description: description || fallbackDescription,
-      site: '@yourtwitterhandle',
-      creator: '@yourtwitterhandle',
+      site: '@stoxbg',
+      creator: '@stoxbg',
       images: [image || fallbackImage],
     },
   };
