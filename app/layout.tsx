@@ -1,6 +1,9 @@
-import type { Metadata } from "next";
+import { Metadata } from 'next';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SEO_CONFIG } from '@/lib/seo/config';
+import { organizationSchema, websiteSchema } from '@/lib/seo/schema';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -18,9 +21,39 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Stox.bg | Инвеститорският интернет. На едно място.",
-  description: "Платформа за инвеститори с актуални анализи за акции, компании, икономика и геополитика. Сбити текстове с готови AI prompt-ове за по-задълбочени разговори.",
-  keywords: ["инвестиции", "акции", "пазари", "анализи", "икономика", "геополитика", "финанси", "AI"],
+  metadataBase: new URL('https://stox.bg'),
+  title: {
+    default: SEO_CONFIG.defaultTitle!,
+    template: SEO_CONFIG.titleTemplate!,
+  },
+  description: SEO_CONFIG.description,
+  keywords: SEO_CONFIG.additionalMetaTags?.find(tag => tag.name === 'keywords')?.content,
+  openGraph: {
+    ...SEO_CONFIG.openGraph,
+    images: SEO_CONFIG.openGraph?.images,
+  },
+  twitter: {
+    ...SEO_CONFIG.twitter,
+    title: SEO_CONFIG.defaultTitle,
+    description: SEO_CONFIG.description,
+  },
+  alternates: {
+    canonical: 'https://stox.bg',
+    languages: {
+      'bg-BG': 'https://stox.bg',
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 // Inline script as a string to prevent the theme flash
@@ -64,13 +97,21 @@ const themeScript = `
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="bg" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
@@ -82,6 +123,7 @@ export default function RootLayout({
             <Footer />
           </SmoothScrollProvider>
         </ThemeProvider>
+        <GoogleAnalytics gaId="G-XXXXXXXXXX" /> {/* Replace with your Google Analytics ID */}
       </body>
     </html>
   );
