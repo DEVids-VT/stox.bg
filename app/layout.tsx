@@ -6,22 +6,38 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { 
+  generateSEOMetadata, 
+  generateOrganizationSchema, 
+  generateWebsiteSchema 
+} from "@/lib/seo/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generateSEOMetadata({
   title: "Stox.bg | Инвеститорският интернет. На едно място.",
-  description: "Платформа за инвеститори с актуални анализи за акции, компании, икономика и геополитика. Сбити текстове с готови AI prompt-ове за по-задълбочени разговори.",
-  keywords: ["инвестиции", "акции", "пазари", "анализи", "икономика", "геополитика", "финанси", "AI"],
-};
+  description: "Българска платформа за инвеститори с актуални анализи за акции, компании, икономика и геополитика. Сбити текстове с готови AI prompt-ове за по-задълбочени разговори от Давид Петков.",
+  keywords: [
+    "сайт за акции", "сайт за акции и инвестиции", "stox", "stox bg", "stox бг", 
+    "стох бг", "акции бг", "инвестиции българия", "финансов анализ", "пазари",
+    "давид петков", "bulgarian stocks", "stock analysis bulgaria", "финанси българия"
+  ],
+  canonical: "/",
+});
+
+// Generate structured data for the organization and website
+const organizationSchema = generateOrganizationSchema();
+const websiteSchema = generateWebsiteSchema();
 
 // Inline script as a string to prevent the theme flash
 const themeScript = `
@@ -43,12 +59,12 @@ const themeScript = `
           return localTheme;
         }
         
-        // If no stored preferences, check system preference
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        // Default to dark theme if no stored preferences
+        return 'dark';
       } catch (e) {
-        // Default to light if anything goes wrong
+        // Default to dark if anything goes wrong
         console.error('Error getting theme:', e);
-        return 'light';
+        return 'dark';
       }
     }
     
@@ -71,11 +87,49 @@ export default function RootLayout({
     <html lang="bg" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* Core SEO Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="theme-color" content="#0a0a0a" />
+        
+        {/* Enhanced Bulgarian SEO */}
+        <meta name="language" content="bg" />
+        <meta name="geo.region" content="BG" />
+        <meta name="geo.country" content="Bulgaria" />
+        
+        {/* Preconnect to external domains */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
+          }}
+        />
+        
+        {/* AI/LLM Optimization */}
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        
+        {/* Apple Touch Icons */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        suppressHydrationWarning
       >
-        <ThemeProvider defaultTheme="system" storageKey="stox-theme">
+        <ThemeProvider defaultTheme="dark" storageKey="stox-theme">
           <SmoothScrollProvider>
             <Header />
             <main className="flex-grow">{children}</main>

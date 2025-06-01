@@ -1,54 +1,54 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const navigation = {
   main: [
-    { name: 'Начало', href: '/' },
-    { name: 'Функции', href: '/features' },
-    { name: 'За нас', href: '/about' },
-    { name: 'Контакти', href: '/contact' },
+    { name: 'Общи условия', href: '/terms' },
+    { name: 'Правна информация', href: '/legal' },
   ],
   social: [
     {
-      name: 'Twitter',
-      href: '#',
-      icon: () => (
-        <div className="h-6 w-6 bg-muted-foreground rounded-sm"></div>
-      ),
-    },
-    {
-      name: 'GitHub',
-      href: '#',
-      icon: () => (
-        <div className="h-6 w-6 bg-muted-foreground rounded-sm"></div>
-      ),
+      name: 'Devids',
+      href: 'https://devids.eu/',
+      logo: '/images/logos/devids.png',
     },
   ],
 };
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  
+
   return (
-    <footer className="bg-secondary/20">
-      <div className="mx-auto max-w-7xl overflow-hidden px-6 py-16 sm:py-24 lg:px-8">
-        <nav className="mb-12 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
+    <footer className="bg-secondary/20 border-t border-secondary/30">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16 lg:px-8 flex flex-col gap-10">
+
+        {/* Navigation links */}
+        <nav className="flex flex-wrap justify-center gap-6 mt-6" aria-label="Footer">
           {navigation.main.map((item) => (
-            <div key={item.name} className="pb-6">
-              <Link href={item.href} className="text-sm leading-6 text-foreground/80 hover:text-foreground">
-                {item.name}
-              </Link>
-            </div>
+            <Link key={item.name} href={item.href} className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+              {item.name}
+            </Link>
           ))}
         </nav>
-        <div className="mt-10 flex justify-center space-x-10">
+
+        {/* Social logos */}
+        <div className="flex justify-center gap-10 mt-8">
           {navigation.social.map((item) => (
-            <Link key={item.name} href={item.href} className="text-muted-foreground hover:text-foreground">
+            <Link key={item.name} href={item.href} target="_blank" rel="noopener noreferrer" className="group">
+              <Image
+                src={item.logo}
+                alt={item.name + ' logo'}
+                width={64}
+                height={64}
+                className="h-12 w-12 sm:h-16 sm:w-16 object-contain rounded-lg shadow-md group-hover:scale-105 transition-transform"
+              />
               <span className="sr-only">{item.name}</span>
-              <item.icon />
             </Link>
           ))}
         </div>
-        <p className="mt-10 text-center text-xs leading-5 text-muted-foreground">
+
+        {/* Copyright */}
+        <p className="mt-10 text-center text-xs text-muted-foreground">
           &copy; {currentYear} Stox.bg. Всички права запазени.
         </p>
       </div>

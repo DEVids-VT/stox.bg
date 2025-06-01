@@ -8,10 +8,10 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const navigation = [
-  { name: 'Начало', href: '/' },
-  { name: 'Функции', href: '/features' },
-  { name: 'За нас', href: '/about' },
-  { name: 'Контакти', href: '/contact' },
+  { name: 'Бърза лента', href: '/fastlane' },
+  { name: 'Категории', href: '/categories' },
+  { name: 'Обучения', href: '/features' },
+  { name: 'Какво е Stox.bg?', href: '/about' },
 ];
 
 export function Header() {
