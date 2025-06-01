@@ -249,7 +249,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         )}
         
         {/* Article content - render with custom formatter */}
-        <article className="prose prose-lg dark:prose-invert prose-headings:font-bold prose-a:text-primary max-w-none bg-gradient-to-br from-background to-card p-8 rounded-xl shadow-md">
+        <article className="prose prose-lg dark:prose-invert prose-headings:font-bold prose-a:text-primary max-w-none from-background to-card  rounded-xl shadow-md">
           {/* Option 1: Use FormattedContent for special formatting */}
           <FormattedContent content={markdownContent} />
           
