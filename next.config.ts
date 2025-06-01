@@ -11,7 +11,11 @@ const nextConfig: NextConfig = {
       'picsum.photos',
       'loremflickr.com',
       'www.tradingnews.com',
-      'images.unsplash.com'
+      'images.unsplash.com',
+      "web-cdn.markets.com",
+      "cdn.markets.com",
+      "png.pngtree.com",
+      "gmk.center"
     ],
     formats: ['image/webp', 'image/avif'],
   },
