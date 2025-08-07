@@ -1,6 +1,4 @@
-<span style="font-size:48px; font-weight:bold;">
-  <span style="color:black;">DEV</span><span style="color:#6A5ACD;">IDS</span>
-</span>
+# DEVIDS
 
 # Authentication Between React and .NET Using OAuth 2.0 and OIDC with Auth0
 
