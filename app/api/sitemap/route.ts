@@ -1,97 +1,63 @@
 import { NextResponse } from 'next/server';
+import { createSupabaseClient } from '@/lib/supabase';
 
-// Mock function to get all stocks - replace with your actual data fetching
-async function getAllStocks() {
-  // This would typically fetch from your database
-  return [
-    { ticker: 'nvda', lastModified: '2024-01-15T15:30:00Z' },
-    { ticker: 'aapl', lastModified: '2024-01-14T10:00:00Z' },
-    { ticker: 'tsla', lastModified: '2024-01-13T14:20:00Z' },
-    { ticker: 'googl', lastModified: '2024-01-12T11:15:00Z' },
-    { ticker: 'msft', lastModified: '2024-01-11T16:45:00Z' },
-  ];
-}
-
-// Mock function to get all categories
-async function getAllCategories() {
-  return [
-    { id: 'technology', lastModified: '2024-01-10T09:00:00Z' },
-    { id: 'healthcare', lastModified: '2024-01-09T12:30:00Z' },
-    { id: 'finance', lastModified: '2024-01-08T15:20:00Z' },
-  ];
-}
+// Deprecated legacy sources removed (stocks, generic categories)
 
 export async function GET() {
   const baseUrl = process.env.VERCEL_URL 
     ? `https://${process.env.VERCEL_URL}` 
     : 'https://stox.bg';
 
-  const stocks = await getAllStocks();
-  const categories = await getAllCategories();
-
+  // Static sections
   const staticPages = [
-    {
-      url: `${baseUrl}/`,
-      lastModified: '2024-01-15T00:00:00Z',
-      changeFrequency: 'daily',
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: '2024-01-01T00:00:00Z',
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: '2024-01-01T00:00:00Z',
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/features`,
-      lastModified: '2024-01-01T00:00:00Z',
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/stocks`,
-      lastModified: '2024-01-15T00:00:00Z',
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories`,
-      lastModified: '2024-01-15T00:00:00Z',
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
+    { path: '/', changeFrequency: 'daily', priority: 1.0, lastmod: '2024-01-15T00:00:00Z' },
+    { path: '/about', changeFrequency: 'monthly', priority: 0.8, lastmod: '2024-01-01T00:00:00Z' },
+    { path: '/contact', changeFrequency: 'monthly', priority: 0.7, lastmod: '2024-01-01T00:00:00Z' },
+    { path: '/business', changeFrequency: 'weekly', priority: 0.8, lastmod: '2024-01-15T00:00:00Z' },
+    { path: '/technology', changeFrequency: 'weekly', priority: 0.8, lastmod: '2024-01-15T00:00:00Z' },
   ];
 
-  const stockPages = stocks.map(stock => ({
-    url: `${baseUrl}/stocks/${stock.ticker.toLowerCase()}`,
-    lastModified: stock.lastModified,
-    changeFrequency: 'daily',
-    priority: 0.8,
-  }));
+  // Dynamic posts
+  type PostLite = { id: number; slug: string | null; published_at: string | null };
+  let postEntries: { path: string; lastmod: string; changeFrequency: string; priority: number }[] = [];
+  try {
+    const supabase = createSupabaseClient();
+    const { data: posts } = await supabase
+      .from('posts')
+      .select('id, slug, published_at, isdeleted')
+      .eq('isdeleted', false)
+      .order('id', { ascending: false })
+      .limit(2000);
 
-  const categoryPages = categories.map(category => ({
-    url: `${baseUrl}/categories/${category.id}`,
-    lastModified: category.lastModified,
-    changeFrequency: 'weekly',
-    priority: 0.7,
-  }));
+    if (posts && Array.isArray(posts)) {
+      postEntries = (posts as PostLite[]).map((p) => {
+        const slugOrId = p.slug ?? String(p.id);
+        return {
+          path: `/c/${slugOrId}`,
+          lastmod: (p.published_at ? new Date(p.published_at) : new Date()).toISOString(),
+          changeFrequency: 'weekly',
+          priority: 0.9,
+        };
+      });
+    }
+  } catch {
+    // Fallback: no dynamic posts
+    postEntries = [];
+  }
 
-  const allPages = [...staticPages, ...stockPages, ...categoryPages];
+  const allEntries = [
+    ...staticPages.map(s => ({ ...s, url: `${baseUrl}${s.path}` })),
+    ...postEntries.map(p => ({ ...p, url: `${baseUrl}${p.path}` })),
+  ];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${allPages
+${allEntries
   .map(
     page => `  <url>
     <loc>${page.url}</loc>
-    <lastmod>${page.lastModified}</lastmod>
+    <lastmod>${page.lastmod}</lastmod>
     <changefreq>${page.changeFrequency}</changefreq>
     <priority>${page.priority}</priority>
     <xhtml:link rel="alternate" hreflang="bg" href="${page.url}" />
@@ -108,4 +74,4 @@ ${allPages
       'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
     },
   });
-} 
+}

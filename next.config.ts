@@ -15,7 +15,9 @@ const nextConfig: NextConfig = {
       "web-cdn.markets.com",
       "cdn.markets.com",
       "png.pngtree.com",
-      "gmk.center"
+      "gmk.center",
+      "imgur.com",
+      "media.discordapp.net"
     ],
     formats: ['image/webp', 'image/avif'],
   },
@@ -30,6 +32,10 @@ const nextConfig: NextConfig = {
       {
         source: '/(.*)',
         headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+          },
           {
             key: 'X-DNS-Prefetch-Control',
             value: 'on'

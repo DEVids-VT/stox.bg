@@ -12,6 +12,11 @@ const navigation = {
       href: 'https://devids.eu/',
       logo: '/images/logos/devids.png',
     },
+    {
+      name: 'Skillbridge',
+      href: 'https://skillbridge.devids.eu/',
+      logo: '/images/logos/sb.png',
+    },
   ],
 };
 
@@ -49,7 +54,7 @@ export function Footer() {
 
         {/* Copyright */}
         <p className="mt-10 text-center text-xs text-muted-foreground">
-          &copy; {currentYear} Stox.bg. Всички права запазени.
+          &copy; {currentYear} stox.bg – проект на Devids. Всички права запазени.
         </p>
       </div>
     </footer>

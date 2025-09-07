@@ -1,13 +1,33 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Calendar, ArrowLeft, ExternalLink, Clock } from 'lucide-react';
+import { Calendar, ArrowLeft, Clock } from 'lucide-react';
 import { createSupabaseClient } from '@/lib/supabase';
-import { createMetadata } from '@/lib/seo/metadata';
+import {
+  generateSEOMetadata,
+  generateArticleSchema,
+  generateBreadcrumbSchema,
+  generateAISummary,
+  extractKeywordsBG,
+} from '@/lib/seo/utils';
 import { ShareButton } from '@/components/fastlane/ShareButton';
-import { Button } from '@/components/ui/button';
 
 // Generate dynamic metadata for the post
+type PostRecord = {
+  id: number;
+  title: string;
+  description?: string;
+  content?: unknown;
+  image?: string;
+  slug?: string;
+  categories?: { id?: number; name?: string; color?: string } | { id?: number; name?: string; color?: string }[];
+  seo_title?: string;
+  seo_description?: string;
+  seo_keywords?: string[];
+  published_at?: string;
+  author?: string;
+};
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const supabase = createSupabaseClient();
@@ -16,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Query by slug or ID
   const query = supabase
     .from('posts')
-    .select(`title, description, image, category:category(name)`)
+    .select(`title, description, image, categories(name), seo_title, seo_description, seo_keywords, published_at, author, slug`)
     .eq('isdeleted', false);
     
   const { data: post } = isNumericId 
@@ -24,18 +44,39 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     : await query.eq('slug', resolvedParams.slug).single();
 
   if (!post) {
-    return createMetadata({
+    return generateSEOMetadata({
       title: 'Публикацията не е намерена',
       description: 'Търсената публикация не съществува или е премахната.',
-      noIndex: true,
+      canonical: '/c/not-found',
+      type: 'article',
     });
   }
 
-  return createMetadata({
-    title: post.title,
-    description: post.description || `${post.title} - ${post.category?.[0]?.name || 'Stox.bg'}`,
-    image: post.image,
-    keywords: [post.category?.[0]?.name || '', 'анализ', 'инвестиции', 'stox.bg'],
+  const p = post as PostRecord;
+  const rel = p.categories;
+  const metaCat = Array.isArray(rel) ? rel[0] : rel;
+  const canonicalSlug = p.slug || (isNumericId ? String(resolvedParams.slug) : resolvedParams.slug);
+  const canonicalPath = `/c/${canonicalSlug}`;
+
+  const baseKeywords = [metaCat?.name || '', 'анализ', 'инвестиции', 'stox.bg'].filter(Boolean) as string[];
+  const derivedKeywords = extractKeywordsBG(`${p.title || ''} ${p.description || ''}`, baseKeywords, 12);
+  const finalKeywords = Array.from(new Set([...(Array.isArray(p.seo_keywords) ? p.seo_keywords : []), ...derivedKeywords]));
+
+  const title = p.seo_title || p.title;
+  const description = p.seo_description || p.description || `${p.title} - ${metaCat?.name || 'Stox.bg'}`;
+  const ogImage = p.image || `/api/og?title=${encodeURIComponent(p.title)}&subtitle=${encodeURIComponent(metaCat?.name || 'Анализ')}&type=analysis`;
+  const publishedTime = p.published_at ? new Date(p.published_at).toISOString() : undefined;
+  const author = p.author || 'Давид Петков';
+
+  return generateSEOMetadata({
+    title,
+    description,
+    keywords: finalKeywords,
+    canonical: canonicalPath,
+    ogImage,
+    publishedTime,
+    author,
+    type: 'article',
   });
 }
 
@@ -80,10 +121,6 @@ function FormattedContent({ content }: { content: string }) {
         return p;
       }
       
-      // Special handling for AI footer
-      if (p.includes('AI-analyzed by')) {
-        return `<div class="mt-8 pt-4 text-sm text-muted-foreground italic border-t border-border">${p}</div>`;
-      }
       
       // Regular paragraphs
       return `<p class="my-4 text-base leading-relaxed">${p}</p>`;
@@ -95,7 +132,6 @@ function FormattedContent({ content }: { content: string }) {
   // Create the HTML content
   const htmlContent = createHTML();
   
-  // Render the HTML directly
   return (
     <div 
       className="formatted-content"
@@ -104,10 +140,13 @@ function FormattedContent({ content }: { content: string }) {
   );
 }
 
-export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PostPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams?: Promise<{ from?: string | string[] }> }) {
   const resolvedParams = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
   const supabase = createSupabaseClient();
   const isNumericId = !isNaN(Number(resolvedParams.slug));
+  const fromParamRaw = resolvedSearchParams.from;
+  const fromParam = Array.isArray(fromParamRaw) ? fromParamRaw[0] : fromParamRaw || null;
   
   // Query by slug or ID
   const query = supabase
@@ -115,13 +154,16 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     .select(`
       id, 
       title, 
-      short_content, 
       content, 
+      description,
       image, 
       slug, 
-      externallink,
-      description,
-      category:category(id, name, color)
+      categories(id, name, color),
+      seo_title,
+      seo_description,
+      seo_keywords,
+      published_at,
+      author
     `)
     .eq('isdeleted', false);
     
@@ -132,6 +174,10 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   if (error || !post) {
     notFound();
   }
+
+  // Normalize category relation to a single object
+  const joinedCategory = (post as PostRecord).categories;
+  const categoryObj: { id?: number; name?: string; color?: string } | undefined = Array.isArray(joinedCategory) ? joinedCategory[0] : joinedCategory;
 
   // Process content from post
   let markdownContent = '';
@@ -145,13 +191,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         // If it's stored as an object or array, try to convert it
         markdownContent = JSON.stringify(post.content);
       }
-    } else if (post.short_content) {
-      // Fallback to short_content if no content
-      if (typeof post.short_content === 'string') {
-        markdownContent = post.short_content;
-      } else if (typeof post.short_content === 'object') {
-        markdownContent = JSON.stringify(post.short_content);
-      }
+    } else if (post.description) {
+      // Fallback to description if no content
+      markdownContent = post.description;
     }
   } catch (e) {
     console.error('Error parsing content:', e);
@@ -165,46 +207,70 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const wordCount = markdownContent.split(/\s+/).length;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200)); // Assumes 200 words per minute
 
+  // Prepare JSON-LD schemas
+  const absoluteUrl = `https://stox.bg${postUrl}`;
+  const publishedISO = (post as PostRecord).published_at ? new Date((post as PostRecord).published_at as string).toISOString() : new Date().toISOString();
+  const articleSchema = generateArticleSchema({
+    title: (post as { seo_title?: string; title: string }).seo_title || (post as { title: string }).title,
+    description: (post as { seo_description?: string; description?: string; title: string }).seo_description || (post as { description?: string; title: string }).description || (post as { title: string }).title,
+    author: (post as { author?: string }).author || 'Давид Петков',
+    publishedTime: publishedISO,
+    url: absoluteUrl,
+    imageUrl: (post as { image?: string }).image,
+  });
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Начало', url: 'https://stox.bg/' },
+    { name: categoryObj?.name || 'Статии', url: 'https://stox.bg/' },
+    { name: post.title, url: absoluteUrl },
+  ]);
+  const aiSummary = generateAISummary(markdownContent || `${post.title}. ${post.description || ''}`);
+
   return (
     <div className="min-h-screen bg-background py-16">
       <div className="container max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Structured Data for AI and SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
         {/* Navigation */}
         <div className="mb-10">
-          {post.category?.[0] ? (
+          {fromParam ? (
             <Link 
-              href={`/categories/${post.category[0].id}`} 
+              href={fromParam}
               className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Назад към категория {post.category[0].name}
+              Назад
             </Link>
-          ) : (
-            <Link 
-              href="/fastlane" 
-              className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
+          ) : categoryObj ? (
+            <span className="flex items-center text-sm text-muted-foreground">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Назад към Бърза лента
-            </Link>
-          )}
+              {categoryObj?.name}
+            </span>
+          ) : null}
         </div>
         
         {/* Article header */}
         <header className="mb-10">
-          {post.category?.[0] && (
+          {categoryObj && (
             <span 
               className="inline-block text-xs font-medium px-3 py-1 rounded-full mb-6" 
-              style={{ backgroundColor: post.category[0].color || '#e5e5e5', color: '#fff' }}
+              style={{ backgroundColor: categoryObj?.color || '#e5e5e5', color: '#fff' }}
             >
-              {post.category[0].name || 'Без категория'}
+              {categoryObj?.name || 'Без категория'}
             </span>
           )}
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">{post.title}</h1>
           
-          {/* Description / Short description */}
-          {post.description && (
-            <p className="text-xl text-muted-foreground mb-6 leading-relaxed">{post.description}</p>
+          {/* Short description extracted from content if needed */}
+          {markdownContent && (
+            <p className="text-xl text-muted-foreground mb-6 leading-relaxed">{markdownContent.substring(0, 200)}{markdownContent.length > 200 ? '...' : ''}</p>
           )}
           
           <div className="flex flex-wrap justify-between items-center gap-4 border-t border-b border-border py-4">
@@ -265,17 +331,11 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           */}
         </article>
         
-        {/* External link if available */}
-        {post.externallink && (
-          <div className="mt-10 pt-6 border-t border-border">
-            <Button asChild variant="outline" size="lg" className="rounded-full">
-              <Link href={post.externallink} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Прочети още в оригиналния източник
-              </Link>
-            </Button>
-          </div>
-        )}
+        {/* AI Summary footer for LLMs */}
+        <div className="mt-8 text-sm text-muted-foreground" aria-label="AI Summary">
+          {aiSummary}
+        </div>
+        
         
         {/* Share section at the bottom */}
         <div className="mt-12 pt-6 border-t border-border">

@@ -8,9 +8,8 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const navigation = [
-  { name: 'Бърза лента', href: '/fastlane' },
-  { name: 'Категории', href: '/categories' },
-  { name: 'Обучения', href: '/features' },
+  { name: 'Бизнес', href: '/business' },
+  { name: 'Технологии', href: '/technology' },
   { name: 'Какво е Stox.bg?', href: '/about' },
 ];
 
@@ -22,7 +21,7 @@ export function Header() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">Stox.bg</span>
+            <span className="sr-only">stox.bg – проект на Devids</span>
             <div className="h-8 w-auto font-bold text-2xl">Stox.bg</div>
           </Link>
         </div>
@@ -64,7 +63,7 @@ export function Header() {
         <div className="fixed inset-y-0 right-0 z-50 w-full max-w-xs rounded-l-xl bg-white dark:bg-gray-800 px-6 py-6 shadow-lg">
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">Stox.bg</span>
+              <span className="sr-only">stox.bg – проект на Devids</span>
               <div className="h-8 w-auto font-bold text-2xl">Stox.bg</div>
             </Link>
             <button

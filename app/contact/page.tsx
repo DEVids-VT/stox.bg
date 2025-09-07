@@ -1,5 +1,5 @@
 import { createMetadata } from '@/lib/seo/metadata';
-import { ContactForm } from './contact-form';
+import { CalendlyInline } from '@/components/ui/calendly-embed';
 
 export const metadata = createMetadata({
   title: 'Контакти',
@@ -17,8 +17,8 @@ export default function ContactPage() {
             Имате въпроси относно Stox.bg? Тук сме, за да помогнем.
           </p>
         </div>
-        <div className="mx-auto mt-16 max-w-xl">
-          <ContactForm />
+        <div className="mx-auto mt-12 max-w-3xl">
+          <CalendlyInline url="https://calendly.com/davidpetkov/30min" height={700} />
         </div>
       </div>
     </div>

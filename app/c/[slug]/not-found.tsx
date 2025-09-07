@@ -11,9 +11,9 @@ export default function PostNotFound() {
           Търсената публикация не съществува или е премахната.
         </p>
         <Button asChild>
-          <Link href="/fastlane">
+          <Link href="/">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Назад към Бърза лента
+            Назад
           </Link>
         </Button>
       </div>

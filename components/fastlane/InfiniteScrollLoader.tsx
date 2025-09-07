@@ -7,12 +7,10 @@ import { PostCard } from './PostCard';
 export type Post = {
   id: number;
   title: string;
-  short_content: string | object;
+  content?: string;
   description?: string;
   image: string;
   slug: string;
-  externallink?: string;
-  is_deep_research?: boolean;
   category: {
     id: number;
     name: string;
@@ -23,9 +21,10 @@ export type Post = {
 type InfiniteScrollLoaderProps = {
   initialPosts: Post[];
   categoryId?: number;
+  fromPath?: string;
 };
 
-export function InfiniteScrollLoader({ initialPosts, categoryId }: InfiniteScrollLoaderProps) {
+export function InfiniteScrollLoader({ initialPosts, categoryId, fromPath }: InfiniteScrollLoaderProps) {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [lastId, setLastId] = useState<number | null>(
     initialPosts.length > 0 ? initialPosts[initialPosts.length - 1].id : null
@@ -42,7 +41,7 @@ export function InfiniteScrollLoader({ initialPosts, categoryId }: InfiniteScrol
     // Start building the query for posts
     let query = supabase
       .from('posts')
-      .select(`id, title, short_content, description, image, slug, externallink, category, is_deep_research`)
+      .select(`id, title, content, description, image, slug, category`)
       .eq('isdeleted', false)
       .lt('id', lastId) // Load posts with ID less than the last loaded post
       .order('id', { ascending: false })
@@ -115,12 +114,10 @@ export function InfiniteScrollLoader({ initialPosts, categoryId }: InfiniteScrol
       return {
         id: post.id,
         title: post.title,
-        short_content: post.short_content,
+        content: post.content,
         description: post.description,
         image: post.image,
         slug: post.slug,
-        externallink: post.externallink,
-        is_deep_research: post.is_deep_research || false,
         category: categoryData
       };
     });
@@ -151,7 +148,11 @@ export function InfiniteScrollLoader({ initialPosts, categoryId }: InfiniteScrol
       {/* Single column feed */}
       <div className="space-y-0">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <PostCard 
+            key={post.id} 
+            post={post} 
+            fromPath={fromPath}
+          />
         ))}
       </div>
       

@@ -28,6 +28,46 @@ export const slugifyBG = (text: string): string => {
     .replace(/^-|-$/g, '');
 };
 
+// Ensure absolute URL for images and links
+const toAbsoluteUrl = (pathOrUrl: string, baseUrl: string): string => {
+  try {
+    if (!pathOrUrl) return `${baseUrl}/images/og-default.jpg`;
+    if (/^https?:\/\//.test(pathOrUrl)) return pathOrUrl;
+    return `${baseUrl}${pathOrUrl.startsWith('/') ? '' : '/'}${pathOrUrl}`;
+  } catch {
+    return `${baseUrl}/images/og-default.jpg`;
+  }
+};
+
+// Basic Bulgarian keyword extraction for GEO
+export const extractKeywordsBG = (
+  text: string,
+  extra: string[] = [],
+  max: number = 12
+): string[] => {
+  if (!text) return extra.slice(0, max);
+  const stopwords = new Set([
+    'и','в','на','с','за','по','от','до','че','как','кои','кой','кога','къде','защо','тъй','като','не','да','ще','са','е','съм','сме','сте',
+    'или','но','ако','защото','така','само','още','при','между','като','без','над','под','след','преди','тук','там','този','тази','тези','това',
+    'ни','ви','си','му','ѝ','им','ми','ти','го','я','ги','наш','ваш','техен','техни','много','повече','най','вече','поради','относно',
+    'също','може','трябва','беше','били','бъдe','има','имат','имаме','имате','имаха'
+  ]);
+  const tokens = text
+    .toLowerCase()
+    .replace(/[^a-zа-я0-9\s]/gi, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .filter(w => !stopwords.has(w) && w.length > 2);
+  const freq = new Map<string, number>();
+  for (const t of tokens) freq.set(t, (freq.get(t) || 0) + 1);
+  const ranked = Array.from(freq.entries()).sort((a, b) => b[1] - a[1]).map(([w]) => w);
+  const combined = Array.from(new Set([...
+    extra.map(e => e.toLowerCase()),
+    ...ranked
+  ]));
+  return combined.slice(0, max);
+};
+
 // Generate enhanced metadata for Bulgarian stock platform
 export const generateSEOMetadata = ({
   title,
@@ -59,17 +99,18 @@ export const generateSEOMetadata = ({
   ];
 
   const allKeywords = [...defaultKeywords, ...keywords].join(', ');
-  const fullTitle = title.includes('Stox.bg') ? title : `${title} | Stox.bg`;
+  const fullTitle = title.toLowerCase().includes('stox.bg') ? title : `${title} | stox.bg`;
   const url = canonical ? `${baseUrl}${canonical}` : baseUrl;
-  const imageUrl = ogImage || `${baseUrl}/images/og-default.jpg`;
+  const imageUrl = toAbsoluteUrl(ogImage || '/images/og-default.jpg', baseUrl);
 
   return {
     title: fullTitle,
     description,
     keywords: allKeywords,
+    metadataBase: new URL(baseUrl),
     authors: [{ name: author }],
     creator: author,
-    publisher: 'Stox.bg',
+    publisher: 'stox.bg – проект на Devids',
     robots: {
       index: true,
       follow: true,
@@ -87,7 +128,7 @@ export const generateSEOMetadata = ({
       url,
       title: fullTitle,
       description,
-      siteName: 'Stox.bg',
+      siteName: 'stox.bg – проект на Devids',
       images: [
         {
           url: imageUrl,

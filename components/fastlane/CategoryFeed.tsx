@@ -6,18 +6,32 @@ type CategoryFeedProps = {
 };
 
 export async function CategoryFeed({ categoryId }: CategoryFeedProps) {
-  const supabase = createSupabaseClient();
+  let supabase: ReturnType<typeof createSupabaseClient>;
+  try {
+    supabase = createSupabaseClient();
+  } catch (e) {
+    console.error('Supabase init error (CategoryFeed):', (e as Error)?.message || e);
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-gradient-to-br from-background to-card border border-border rounded-2xl p-8 text-center shadow-lg">
+          <p className="text-red-500 font-medium">Грешка при свързване към базата.</p>
+          <p className="text-muted-foreground mt-2">Проверете конфигурацията и опитайте отново.</p>
+        </div>
+      </div>
+    );
+  }
   
   // Fetch the first 10 posts for this category
   const { data: postsData, error: postsError } = await supabase
     .from('posts')
-    .select(`id, title, short_content, description, image, slug, externallink, category, is_deep_research`)
+    .select(`id, title, content, description, image, slug, category`)
     .eq('isdeleted', false)
     .eq('category', categoryId)
     .order('id', { ascending: false })
     .limit(10);
 
   if (postsError) {
+    console.error('Supabase posts error (CategoryFeed):', postsError);
     return (
       <div className="max-w-2xl mx-auto">
         <div className="bg-gradient-to-br from-background to-card border border-border rounded-2xl p-8 text-center shadow-lg">
@@ -42,30 +56,22 @@ export async function CategoryFeed({ categoryId }: CategoryFeedProps) {
     return {
       id: post.id,
       title: post.title,
-      short_content: post.short_content,
+      content: post.content,
       description: post.description,
       image: post.image,
       slug: post.slug,
-      externallink: post.externallink,
-      is_deep_research: post.is_deep_research || false,
       category: category
     };
   }) || [];
 
-  if (posts.length === 0) {
-    return (
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-gradient-to-br from-background to-card border border-border rounded-2xl p-8 text-center shadow-lg">
-          <p className="text-xl font-medium">Няма налични публикации в тази категория.</p>
-          <p className="text-muted-foreground mt-2">Моля, проверете другите категории или се върнете по-късно.</p>
-        </div>
-      </div>
-    );
-  }
+  const lowerName = (category.name || '').toLowerCase();
+  const fromPath = lowerName.startsWith('бизнес') || lowerName.startsWith('business')
+    ? '/business'
+    : '/technology';
 
   return (
     <div className="w-full mx-auto">
-      <InfiniteScrollLoader initialPosts={posts} categoryId={categoryId} />
+      <InfiniteScrollLoader initialPosts={posts} categoryId={categoryId} fromPath={fromPath} />
     </div>
   );
 } 

@@ -13,10 +13,10 @@ const SITE_URL = process.env.SITE_URL || 'https://stox.bg';
 // Test URLs to validate
 const TEST_URLS = [
   '/',
-  '/stocks/nvda',
   '/about',
   '/contact',
-  '/categories',
+  '/business',
+  '/technology',
 ];
 
 class SEOValidator {

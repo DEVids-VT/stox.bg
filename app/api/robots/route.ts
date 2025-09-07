@@ -5,20 +5,19 @@ export async function GET() {
     ? `https://${process.env.VERCEL_URL}` 
     : 'https://stox.bg';
 
-  const robotsTxt = `# Stox.bg - Bulgarian Stock Analysis Platform
+  const robotsTxt = `# stox.bg – проект на Devids
 # Enhanced for AI/LLM crawlers and traditional search engines
 
 User-agent: *
 Allow: /
-Allow: /stocks/
-Allow: /analysis/
-Allow: /companies/
-Allow: /categories/
+Allow: /business
+Allow: /technology
 Allow: /about
 Allow: /contact
-Allow: /features
+Disallow: /features
 Allow: /legal
 Allow: /terms
+Allow: /llms.txt
 
 # AI/LLM Specific Directives
 User-agent: ChatGPT-User
@@ -28,6 +27,12 @@ Allow: /analysis/
 Crawl-delay: 1
 
 User-agent: GPTBot
+Allow: /
+Allow: /stocks/
+Allow: /analysis/
+Crawl-delay: 1
+
+User-agent: PerplexityBot
 Allow: /
 Allow: /stocks/
 Allow: /analysis/
@@ -62,12 +67,15 @@ Disallow: /private/
 # Sitemap location
 Sitemap: ${baseUrl}/sitemap.xml
 
+# LLM Optimization file
+# See: ${baseUrl}/llms.txt
+
 # Additional metadata for AI understanding
-# Site-Purpose: Bulgarian stock market analysis and investment education
-# Content-Language: bg, en
-# Target-Audience: Bulgarian investors, financial analysts
-# Author: Давид Петков (David Petkov)
-# Keywords: акции, инвестиции, финанси, пазари, анализи, stocks, investments`;
+# Site-Purpose: Блог за бизнес и технологии от Devids
+# Content-Language: bg
+# Target-Audience: създатели, екипи, разработчици
+# Author: Devids
+# Keywords: бизнес, технологии, продукт, екип, Devids, stox.bg`;
 
   return new NextResponse(robotsTxt, {
     headers: {

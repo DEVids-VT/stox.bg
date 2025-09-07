@@ -2,50 +2,35 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, ExternalLink, Zap, Stars } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { ShareButton } from './ShareButton';
 
 type PostCardProps = {
   post: {
     id: number;
     title: string;
-    short_content: string | object;
+    content?: string;
     description?: string;
     image: string;
     slug: string;
-    externallink?: string;
-    is_deep_research?: boolean;
     category: {
       id: number;
       name: string;
       color: string;
     };
   };
+  fromPath?: string;
 };
 
-export function PostCard({ post }: PostCardProps) {
-  // Use the description field if available, otherwise fallback to short_content
-  let displayText = post.description || '';
+export function PostCard({ post, fromPath }: PostCardProps) {
+  // Use description first, then content as fallback
+  let displayText = '';
   
-  // If no description, try to extract from short_content
-  if (!displayText && post.short_content) {
-    try {
-      if (typeof post.short_content === 'string') {
-        displayText = post.short_content;
-      } else if (typeof post.short_content === 'object') {
-        // If it's a JSON object with blocks, try to extract text content
-        if (Array.isArray(post.short_content)) {
-          displayText = post.short_content
-            .map((block: { text?: string; content?: string }) => block.text || block.content || '')
-            .join('\n\n');
-        } else {
-          displayText = JSON.stringify(post.short_content);
-        }
-      }
-    } catch (e) {
-      console.error('Error parsing short content:', e);
-      displayText = '';
-    }
+  if (post.description) {
+    displayText = post.description;
+  } else if (post.content) {
+    // Extract first 200 chars from content as preview
+    displayText = post.content.substring(0, 200);
   }
   
   // Format to a proper snippet with limited length and ellipsis
@@ -54,8 +39,9 @@ export function PostCard({ post }: PostCardProps) {
     : displayText;
   
   // Determine the link to use (prefer internal routing)
-  const viewLink = post.slug ? `/c/${post.slug}` : `/c/${post.id}`;
-  const isExternalLink = !!post.externallink;
+  const viewLink = post.slug 
+    ? (fromPath ? `/c/${post.slug}?from=${encodeURIComponent(fromPath)}` : `/c/${post.slug}`)
+    : (fromPath ? `/c/${post.id}?from=${encodeURIComponent(fromPath)}` : `/c/${post.id}`);
   
   // Prevent click propagation for interactive elements
   const handleClick = (e: React.MouseEvent) => {
@@ -68,33 +54,14 @@ export function PostCard({ post }: PostCardProps) {
       {/* Post Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          {/* AI Analysis Badges */}
-          <div className="flex gap-2">
-            {post.is_deep_research ? (
-              <div className="relative">
-                <div className="bg-gradient-to-r from-indigo-700 to-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
-                  <Stars className="h-3 w-3" />
-                  DEEP RESEARCH
-                </div>
-              </div>
-            ) : (
-              <div className="bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
-                <Zap className="h-3 w-3" />
-                AI-ANALYZED
-              </div>
-            )}
-          </div>
-          
           {/* Category */}
           {post.category && (
-            <Link 
-              href={`/categories/${post.category.id}`}
-              onClick={handleClick}
-              className="text-xs font-medium px-2 py-1 rounded-lg hover:scale-105 transition-transform" 
+            <span 
+              className="text-xs font-medium px-2 py-1 rounded-lg"
               style={{ backgroundColor: `${post.category.color}20`, color: post.category.color }}
             >
               {post.category.name || 'Без категория'}
-            </Link>
+            </span>
           )}
         </div>
         
@@ -147,12 +114,6 @@ export function PostCard({ post }: PostCardProps) {
             </span>
           </div>
           
-          {isExternalLink && (
-            <div className="flex items-center gap-1 text-primary">
-              <ExternalLink className="h-4 w-4" />
-              <span>Външен източник</span>
-            </div>
-          )}
         </div>
         
         {/* Action buttons */}
@@ -163,18 +124,6 @@ export function PostCard({ post }: PostCardProps) {
           >
             Прочети повече
           </Link>
-          
-          {isExternalLink && (
-            <Link 
-              href={post.externallink!}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleClick}
-              className="px-4 py-2 bg-muted text-muted-foreground rounded-full text-sm font-medium hover:bg-muted/80 transition-colors"
-            >
-              Оригинал
-            </Link>
-          )}
         </div>
       </div>
     </div>

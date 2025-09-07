@@ -7,7 +7,7 @@ export async function FastlaneFeed() {
   // Fetch the first 10 posts for the feed
   const { data: postsData, error: postsError } = await supabase
     .from('posts')
-    .select(`id, title, short_content, description, image, slug, externallink, category, is_deep_research`)
+    .select(`id, title, content, description, image, slug, externallink, category`)
     .eq('isdeleted', false)
     .order('id', { ascending: false })
     .limit(10);
@@ -51,12 +51,10 @@ export async function FastlaneFeed() {
     return {
       id: post.id,
       title: post.title,
-      short_content: post.short_content,
+      content: post.content,
       description: post.description,
       image: post.image,
       slug: post.slug,
-      externallink: post.externallink,
-      is_deep_research: post.is_deep_research || false,
       category: categoryData
     };
   }) || [];
@@ -160,8 +158,8 @@ export async function FastlaneFeed() {
                   <span className="text-lg font-bold text-cyan-400">{posts.length}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Deep Research</span>
-                  <span className="text-lg font-bold text-purple-400">{posts.filter(p => p.is_deep_research).length}</span>
+                  <span className="text-sm text-muted-foreground">Общо статии</span>
+                  <span className="text-lg font-bold text-purple-400">{posts.length}</span>
                 </div>
               </div>
             </div>
