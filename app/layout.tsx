@@ -32,6 +32,7 @@ export const metadata: Metadata = generateSEOMetadata({
     "основатели", "екип", "разработка", "истории от компанията", "stox.bg"
   ],
   canonical: "/",
+  ogImage: "/images/devidsbanner.png",
 });
 
 // Generate structured data for the organization and website

@@ -9,6 +9,7 @@ export const metadata = createMetadata({
     "млади основатели", "продукт", "истории от компанията", "stox.bg"
   ],
   canonical: "/about",
+  image: "/images/devidsbanner.png",
 });
 
 export default function AboutPage() {

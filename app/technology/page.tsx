@@ -7,6 +7,7 @@ export const metadata = createMetadata({
   description: 'Публикации за инженерни практики, архитектури и продуктова разработка от екипа на Devids.',
   keywords: ['технологии', 'инженеринг', 'архитектура', 'Devids', 'продукт'],
   canonical: '/technology',
+  image: '/images/devidsbanner.png',
 });
 
 export default async function TechnologyPage() {

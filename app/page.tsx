@@ -20,6 +20,7 @@ export const metadata = createMetadata({
   title: "stox.bg – проект на Devids",
   description: "Хъб за Devids: бизнес и технологични инсайти, уроци и истории от екипа – воден от двама основатели под 20.",
   keywords: ["Devids", "бизнес", "технологии", "продукт", "екип", "стартап", "stox.bg"],
+  image: "/images/devidsbanner.png",
 });
 
 export default async function Home() {

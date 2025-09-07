@@ -7,6 +7,7 @@ export const metadata = createMetadata({
   description: 'Публикации за бизнес, стратегия и изграждане на компания от екипа на Devids.',
   keywords: ['бизнес', 'Devids', 'стартъп', 'екип', 'стратегия', 'продукт'],
   canonical: '/business',
+  image: '/images/devidsbanner.png',
 });
 
 export default async function BusinessPage() {

@@ -5,6 +5,7 @@ export const metadata = createMetadata({
   title: 'Контакти',
   description: 'Свържете се с нас за въпроси относно Stox.bg - платформата за инвеститори',
   keywords: ['контакти', 'инвестиции', 'stox.bg', 'поддръжка', 'въпроси'],
+  image: '/images/devidsbanner.png',
 });
 
 export default function ContactPage() {
