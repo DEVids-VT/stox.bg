@@ -8,13 +8,13 @@ type CalendlyInlineProps = {
   height?: number;
 };
 
-export function CalendlyInline({ url, minWidth = 320, height = 700 }: CalendlyInlineProps) {
+export function CalendlyInline({ url }: CalendlyInlineProps) {
   return (
     <div className="w-full">
       <div
         className="calendly-inline-widget"
         data-url={url}
-        style={{ minWidth: `${minWidth}px`, height: `${height}px` }}
+        style={{ minWidth: "320px", height: "700px" }}
       />
       <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
     </div>

@@ -328,7 +328,7 @@ export const generateAISummary = (content: string): string => {
   // This would ideally use an AI service, but for now we'll create a simple version
   const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 10);
   const keySentences = sentences.slice(0, 3);
-  return `🤖 AI Резюме: ${keySentences.join('. ')}.`;
+  return `Summary: ${keySentences.join('. ')}.`;
 };
 
 // Generate hreflang links for international SEO
