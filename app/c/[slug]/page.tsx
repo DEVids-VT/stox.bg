@@ -75,6 +75,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     canonical: canonicalPath,
     ogImage,
     publishedTime,
+    modifiedTime: publishedTime, // Use published time as modified time for now
     author,
     type: 'article',
   });

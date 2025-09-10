@@ -139,7 +139,7 @@ export const generateSEOMetadata = ({
       ],
       ...(type === 'article' && {
         publishedTime,
-        modifiedTime,
+        modifiedTime: modifiedTime || publishedTime,
         authors: [author],
       }),
     },
@@ -149,6 +149,13 @@ export const generateSEOMetadata = ({
       description,
       images: [imageUrl],
       creator: '@stoxbg',
+    },
+    other: {
+      ...(type === 'article' && publishedTime && {
+        'article:published_time': publishedTime,
+        'article:modified_time': modifiedTime || publishedTime,
+        'og:updated_time': modifiedTime || publishedTime,
+      }),
     },
     alternates: {
       canonical: url,

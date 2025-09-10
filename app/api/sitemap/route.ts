@@ -4,17 +4,17 @@ import { createSupabaseClient } from '@/lib/supabase';
 // Deprecated legacy sources removed (stocks, generic categories)
 
 export async function GET() {
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : 'https://stox.bg';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+                  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://stox.bg');
 
-  // Static sections
+  // Static sections with current timestamps
+  const currentDate = new Date().toISOString();
   const staticPages = [
-    { path: '/', changeFrequency: 'daily', priority: 1.0, lastmod: '2024-01-15T00:00:00Z' },
+    { path: '/', changeFrequency: 'daily', priority: 1.0, lastmod: currentDate },
     { path: '/about', changeFrequency: 'monthly', priority: 0.8, lastmod: '2024-01-01T00:00:00Z' },
     { path: '/contact', changeFrequency: 'monthly', priority: 0.7, lastmod: '2024-01-01T00:00:00Z' },
-    { path: '/business', changeFrequency: 'weekly', priority: 0.8, lastmod: '2024-01-15T00:00:00Z' },
-    { path: '/technology', changeFrequency: 'weekly', priority: 0.8, lastmod: '2024-01-15T00:00:00Z' },
+    { path: '/business', changeFrequency: 'weekly', priority: 0.8, lastmod: currentDate },
+    { path: '/technology', changeFrequency: 'weekly', priority: 0.8, lastmod: currentDate },
   ];
 
   // Dynamic posts

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postbuild": "next-sitemap",
+    "postbuild": "echo 'Using dynamic sitemap via API route'",
     "seo:validate": "node scripts/validate-seo.js",
     "seo:test": "npx lighthouse https://stox.bg --view --output=html --output-path=./lighthouse-report.html"
   },
