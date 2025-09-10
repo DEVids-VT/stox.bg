@@ -18,7 +18,8 @@ const nextConfig: NextConfig = {
       "gmk.center",
       "imgur.com",
       "media.discordapp.net",
-      "cdn.discordapp.com"
+      "cdn.discordapp.com",
+      "cdn.leonardo.ai"
     ],
     formats: ['image/webp', 'image/avif'],
   },
