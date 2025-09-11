@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { AnalyticsWrapper } from "@/components/analytics";
 import { 
   generateSEOMetadata, 
   generateOrganizationSchema, 
@@ -136,6 +137,7 @@ export default function RootLayout({
             <Footer />
           </SmoothScrollProvider>
         </ThemeProvider>
+        <AnalyticsWrapper />
       </body>
     </html>
   );
