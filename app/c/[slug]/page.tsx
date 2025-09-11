@@ -7,7 +7,6 @@ import {
   generateSEOMetadata,
   generateArticleSchema,
   generateBreadcrumbSchema,
-  generateAISummary,
   extractKeywordsBG,
 } from '@/lib/seo/utils';
 import { ShareButton } from '@/components/fastlane/ShareButton';
@@ -224,7 +223,6 @@ export default async function PostPage({ params, searchParams }: { params: Promi
     { name: categoryObj?.name || 'Статии', url: 'https://stox.bg/' },
     { name: post.title, url: absoluteUrl },
   ]);
-  const aiSummary = generateAISummary(markdownContent || `${post.title}. ${post.description || ''}`);
 
   return (
     <div className="min-h-screen bg-background py-16">
