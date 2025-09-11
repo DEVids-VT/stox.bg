@@ -1,78 +1,124 @@
-# Next.js SSR Template
+# stox.bg – проект на Devids
 
-A high-performance, SEO-optimized Next.js template with server-side rendering capabilities, designed for modern web applications.
+Високопроизводителен, SEO-оптимизиран Next.js проект с server-side rendering възможности, създаден за модерни уеб приложения.
 
-## Features
+## 🚀 Функции
 
-- **Server-Side Rendering**: Leverages Next.js SSR for improved performance and SEO benefits
-- **SEO Optimization**: Built-in metadata management, Open Graph tags, and structured data
-- **TypeScript Support**: Full TypeScript integration for better type safety and developer experience
-- **Tailwind CSS**: Utility-first CSS framework for rapid UI development
-- **Shadcn UI Components**: Beautifully designed, accessible UI components
-- **Smooth Scrolling**: Integrated Lenis for buttery-smooth scroll experiences
-- **Lucide Icons**: Beautiful, consistent, open-source icons as React components
-- **Responsive Design**: Fully responsive layout that works on all devices and screen sizes
-- **Accessibility**: Built with accessibility in mind to ensure your app can be used by everyone
-- **Performance Optimized**: Optimized for Core Web Vitals and fast loading times
+- **Server-Side Rendering**: Използва Next.js SSR за подобрена производителност и SEO предимства
+- **SEO Оптимизация**: Вградено управление на метаданни, Open Graph тагове и структурирани данни
+- **TypeScript Поддръжка**: Пълна TypeScript интеграция за по-добра типова безопасност
+- **Tailwind CSS**: Utility-first CSS фреймуърк за бърза UI разработка
+- **Shadcn UI Компоненти**: Красиво дизайнирани, достъпни UI компоненти
+- **Плавно Скролиране**: Интегриран Lenis за плавно скролиране
+- **Lucide Икони**: Красиви, консистентни, open-source икони като React компоненти
+- **Responsive Дизайн**: Напълно responsive layout за всички устройства
+- **Достъпност**: Създаден с фокус върху достъпността
+- **Оптимизирана Производителност**: Оптимизиран за Core Web Vitals и бързо зареждане
+- **Български Език**: Пълна поддръжка за български език и локализация
 
-## Getting Started
+## 🛠️ Бързо Стартиране
 
-### Prerequisites
+### Предварителни Изисквания
 
-- Node.js 18.17.0 or later
-- npm, yarn, or pnpm
+- Node.js 18.17.0 или по-нова версия
+- npm, yarn, или pnpm
 
-### Installation
+### Инсталация
 
-1. Clone this repository:
+1. Клонирайте репозитория:
    ```bash
-   git clone https://github.com/yourusername/ssr-template.git
-   cd ssr-template
+   git clone https://github.com/yourusername/stox-bg.git
+   cd stox-bg
    ```
 
-2. Install dependencies:
+2. Стартирайте автоматичната настройка:
+   ```bash
+   ./scripts/setup.sh
+   ```
+
+   Или ръчно:
    ```bash
    npm install
-   # or
-   yarn install
-   # or
-   pnpm install
+   cp .env.example .env.local
+   # Редактирайте .env.local с вашите API ключове
    ```
 
-3. Run the development server:
+3. Стартирайте development сървъра:
    ```bash
    npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+4. Отворете [http://localhost:3000](http://localhost:3000) в браузъра си.
 
-## Project Structure
+## 📁 Структура на Проекта
 
 ```
-├── app/                   # App Router pages and layouts
-│   ├── about/             # About page
-│   ├── contact/           # Contact page
-│   ├── features/          # Features page
+├── app/                   # App Router страници и layouts
+│   ├── about/             # За нас страница
+│   ├── business/          # Бизнес страница
+│   ├── contact/           # Контакти страница
+│   ├── technology/        # Технологии страница
+│   ├── legal/             # Правни страници
+│   ├── terms/             # Условия за ползване
+│   ├── c/                 # Динамични страници
+│   ├── api/               # API routes
 │   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Home page
-├── components/            # Reusable components
-│   ├── layout/            # Layout components (header, footer)
-│   ├── providers/         # Provider components
-│   └── ui/                # UI components
-├── lib/                   # Utility functions and libraries
-│   └── seo/               # SEO utilities
-├── public/                # Static assets
-├── .gitignore             # Git ignore file
-├── components.json        # shadcn UI configuration
-├── next.config.ts         # Next.js configuration
-├── package.json           # Dependencies and scripts
-├── postcss.config.mjs     # PostCSS configuration
-├── tailwind.config.js     # Tailwind CSS configuration
-└── tsconfig.json          # TypeScript configuration
+│   └── page.tsx           # Начална страница
+├── components/            # Преизползваеми компоненти
+│   ├── layout/            # Layout компоненти (header, footer)
+│   ├── providers/         # Provider компоненти
+│   ├── ui/                # UI компоненти
+│   └── fastlane/          # Fastlane специфични компоненти
+├── lib/                   # Utility функции и библиотеки
+│   ├── seo/               # SEO utilities
+│   └── utils.ts           # Общи utility функции
+├── public/                # Статични файлове
+│   └── images/            # Изображения и асети
+├── scripts/               # Скриптове за автоматизация
+├── guides/                # Документация и ръководства
+├── .github/               # GitHub Actions workflows
+├── .vscode/               # VS Code настройки
+├── components.json        # shadcn UI конфигурация
+├── next.config.ts         # Next.js конфигурация
+├── tailwind.config.ts     # Tailwind CSS конфигурация
+├── tsconfig.json          # TypeScript конфигурация
+├── .prettierrc            # Prettier конфигурация
+├── .eslintrc.mjs          # ESLint конфигурация
+├── Dockerfile             # Docker конфигурация
+└── package.json           # Зависимости и скриптове
+```
+
+## 🎯 Доступни Команди
+
+### Development
+```bash
+npm run dev              # Стартира development сървър с Turbopack
+npm run build            # Създава production build
+npm run start            # Стартира production сървър
+npm run clean            # Почиства build артефакти
+```
+
+### Code Quality
+```bash
+npm run lint             # Стартира ESLint
+npm run lint:fix         # Поправя ESLint проблеми
+npm run type-check       # Стартира TypeScript type checking
+npm run format           # Форматира кода с Prettier
+npm run format:check     # Проверява форматирането
+```
+
+### SEO & Performance
+```bash
+npm run seo:validate     # Валидира SEO имплементацията
+npm run seo:test         # Стартира Lighthouse SEO тест
+npm run analyze          # Анализира bundle размера
+```
+
+### Database (когато се конфигурира)
+```bash
+npm run db:generate      # Генерира database schema
+npm run db:push          # Push-ва промените в базата данни
+npm run db:studio        # Отваря database studio
 ```
 
 ## Customization
