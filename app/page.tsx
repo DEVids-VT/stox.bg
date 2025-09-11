@@ -33,9 +33,8 @@ export default async function Home() {
       *,
       categories(name)
     `)
-    .eq('isdeleted', false)
-    .order('id', { ascending: false })
-    .limit(1);
+    .eq('id', 4)
+    .eq('isdeleted', false);
 
   const latestPost: HomePost | null = latestPostArr && latestPostArr.length > 0 ? (latestPostArr[0] as HomePost) : null;
 
@@ -177,7 +176,7 @@ export default async function Home() {
           
           {latestPost ? (
             <Link 
-              href={`/c/${latestPost.slug}`}
+              href={`/c/ot-sustezaniya-do-biznes-nashata-istoriq`}
               className="group block"
             >
               <div className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">

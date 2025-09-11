@@ -19,7 +19,8 @@ const nextConfig: NextConfig = {
       "imgur.com",
       "media.discordapp.net",
       "cdn.discordapp.com",
-      "cdn.leonardo.ai"
+      "cdn.leonardo.ai",
+      "tawacgvbcdbduglwpoqz.supabase.co"
     ],
     formats: ['image/webp', 'image/avif'],
   },

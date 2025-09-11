@@ -269,9 +269,8 @@ export default async function PostPage({ params, searchParams }: { params: Promi
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">{post.title}</h1>
           
-          {/* Short description extracted from content if needed */}
-          {markdownContent && (
-            <p className="text-xl text-muted-foreground mb-6 leading-relaxed">{markdownContent.substring(0, 200)}{markdownContent.length > 200 ? '...' : ''}</p>
+          {markdownContent && post.description && (
+            <p className="text-xl text-muted-foreground mb-6 leading-relaxed">{post.description.substring(0, 200)}{post.description.length > 200 ? '...' : ''}</p>
           )}
           
           <div className="flex flex-wrap justify-between items-center gap-4 border-t border-b border-border py-4">
@@ -334,7 +333,7 @@ export default async function PostPage({ params, searchParams }: { params: Promi
         
         {/* AI Summary footer for LLMs */}
         <div className="mt-8 text-sm text-muted-foreground" aria-label="AI Summary">
-          {aiSummary}
+          {post.description}
         </div>
         
         
