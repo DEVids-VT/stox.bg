@@ -1,9 +1,11 @@
-import { createMetadata } from '@/lib/seo/metadata';
+import { generateSEOMetadata } from '@/lib/seo/utils';
 
-export const metadata = createMetadata({
+export const metadata = generateSEOMetadata({
   title: 'Политика за поверителност',
   description: 'Политика за поверителност и защита на личните данни на stox.bg – проект на Devids',
   keywords: ['поверителност', 'лични данни', 'GDPR', 'stox.bg', 'Devids'],
+  canonical: '/legal',
+  ogImage: '/images/devidsbanner.png',
 });
 
 export default function LegalPage() {

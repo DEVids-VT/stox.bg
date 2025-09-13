@@ -1,11 +1,12 @@
-import { createMetadata } from '@/lib/seo/metadata';
+import { generateSEOMetadata } from '@/lib/seo/utils';
 import { CalendlyInline } from '@/components/ui/calendly-embed';
 
-export const metadata = createMetadata({
+export const metadata = generateSEOMetadata({
   title: 'Контакти',
   description: 'Свържете се с нас за въпроси относно Stox.bg - платформата за инвеститори',
   keywords: ['контакти', 'инвестиции', 'stox.bg', 'поддръжка', 'въпроси'],
-  image: '/images/devidsbanner.png',
+  canonical: '/contact',
+  ogImage: '/images/devidsbanner.png',
 });
 
 export default function ContactPage() {

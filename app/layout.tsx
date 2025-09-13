@@ -97,6 +97,17 @@ export default function RootLayout({
         <meta name="language" content="bg" />
         <meta name="geo.region" content="BG" />
         <meta name="geo.country" content="Bulgaria" />
+        <meta name="geo.placename" content="Bulgaria" />
+        <meta name="ICBM" content="42.6977, 23.3219" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="author" content="Devids" />
+        <meta name="publisher" content="Devids" />
+        <meta name="copyright" content="Devids" />
+        <meta name="revisit-after" content="1 days" />
+        <meta name="distribution" content="global" />
+        <meta name="rating" content="general" />
+        <meta name="target" content="all" />
         
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

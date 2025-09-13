@@ -1,9 +1,11 @@
-import { createMetadata } from '@/lib/seo/metadata';
+import { generateSEOMetadata } from '@/lib/seo/utils';
 
-export const metadata = createMetadata({
+export const metadata = generateSEOMetadata({
   title: 'Общи условия',
-  description: 'Общи условия за използване на stox.bg – a Devids project',
+  description: 'Общи условия за използване на stox.bg – проект на Devids',
   keywords: ['общи условия', 'правила', 'stox.bg', 'Devids'],
+  canonical: '/terms',
+  ogImage: '/images/devidsbanner.png',
 });
 
 export default function TermsPage() {

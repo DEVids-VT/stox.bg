@@ -1,13 +1,13 @@
 import { createSupabaseClient } from '@/lib/supabase';
-import { createMetadata } from '@/lib/seo/metadata';
+import { generateSEOMetadata } from '@/lib/seo/utils';
 import { CategoryFeed } from '@/components/fastlane/CategoryFeed';
 
-export const metadata = createMetadata({
+export const metadata = generateSEOMetadata({
   title: 'Технологии',
   description: 'Публикации за инженерни практики, архитектури и продуктова разработка от екипа на Devids.',
   keywords: ['технологии', 'инженеринг', 'архитектура', 'Devids', 'продукт'],
   canonical: '/technology',
-  image: '/images/devidsbanner.png',
+  ogImage: '/images/devidsbanner.png',
 });
 
 export default async function TechnologyPage() {

@@ -91,21 +91,7 @@ const nextConfig: NextConfig = {
   },
   // Enable static exports for better performance
   trailingSlash: false,
-  // Generate robots.txt and sitemap
-  async redirects() {
-    return [
-      {
-        source: '/robots.txt',
-        destination: '/api/robots',
-        permanent: true,
-      },
-      {
-        source: '/sitemap.xml',
-        destination: '/api/sitemap',
-        permanent: true,
-      },
-    ];
-  },
+  // No custom redirects for robots/sitemap. Next.js app routes will serve these.
 };
 
 export default nextConfig;

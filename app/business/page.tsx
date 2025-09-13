@@ -1,13 +1,13 @@
 import { createSupabaseClient } from '@/lib/supabase';
-import { createMetadata } from '@/lib/seo/metadata';
+import { generateSEOMetadata } from '@/lib/seo/utils';
 import { CategoryFeed } from '@/components/fastlane/CategoryFeed';
 
-export const metadata = createMetadata({
+export const metadata = generateSEOMetadata({
   title: 'Бизнес',
   description: 'Публикации за бизнес, стратегия и изграждане на компания от екипа на Devids.',
   keywords: ['бизнес', 'Devids', 'стартъп', 'екип', 'стратегия', 'продукт'],
   canonical: '/business',
-  image: '/images/devidsbanner.png',
+  ogImage: '/images/devidsbanner.png',
 });
 
 export default async function BusinessPage() {

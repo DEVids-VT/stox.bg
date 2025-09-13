@@ -1,15 +1,15 @@
-import { createMetadata } from "@/lib/seo/metadata";
+import { generateSEOMetadata } from "@/lib/seo/utils";
 import Image from "next/image";
 
-export const metadata = createMetadata({
-  title: "What is Stox.bg?",
-  description: "stox.bg – a Devids project. Хъб за бизнес и технологични истории, уроци и постижения от екипа на Devids – воден от двама основатели под 20.",
+export const metadata = generateSEOMetadata({
+  title: "Какво е Stox.bg?",
+  description: "stox.bg – проект на Devids. Хъб за бизнес и технологични истории, уроци и постижения от екипа на Devids – воден от двама основатели под 20.",
   keywords: [
     "Devids", "стартъп", "бизнес", "технологии", "екип",
     "млади основатели", "продукт", "истории от компанията", "stox.bg"
   ],
   canonical: "/about",
-  image: "/images/devidsbanner.png",
+  ogImage: "/images/devidsbanner.png",
 });
 
 export default function AboutPage() {
