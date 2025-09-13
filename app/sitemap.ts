@@ -4,7 +4,7 @@ import { createSupabaseClient } from '@/lib/supabase'
 export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://stox.bg'
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL ? process.env.NEXT_PUBLIC_VERCEL_URL : 'https://stox.bg'
   const now = new Date().toISOString()
 
   // Core static pages
