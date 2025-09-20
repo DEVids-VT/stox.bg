@@ -10,8 +10,8 @@ export async function GET(request: NextRequest) {
     
     // Create RSS feed instance
     const feed = new RSS({
-      title: 'stox.bg - Българска Финансова Платформа',
-      description: 'Най-новите новини и анализи за финансите, технологиите и бизнеса в България',
+      title: 'stox.bg - проект на Devids',
+      description: 'Най-новите новини от Devids',
       feed_url: `${baseUrl}/feed.xml`,
       site_url: baseUrl,
       language: 'bg',

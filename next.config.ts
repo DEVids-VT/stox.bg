@@ -20,7 +20,9 @@ const nextConfig: NextConfig = {
       "media.discordapp.net",
       "cdn.discordapp.com",
       "cdn.leonardo.ai",
-      "tawacgvbcdbduglwpoqz.supabase.co"
+      "tawacgvbcdbduglwpoqz.supabase.co",
+      "scontent.fsof10-1.fna.fbcdn.net",
+      "www.nvu.bg"
     ],
     formats: ['image/webp', 'image/avif'],
   },

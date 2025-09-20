@@ -10,6 +10,9 @@ import {
   extractKeywordsBG,
 } from '@/lib/seo/utils';
 import { ShareButton } from '@/components/fastlane/ShareButton';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 // Generate dynamic metadata for the post
 type PostRecord = {
@@ -80,63 +83,125 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   });
 }
 
-// Function to process and format the content
+// Function to process and clean content before markdown parsing
 function processContent(content: string): string {
   if (!content) return '';
   
-  // Process literal newlines and escape sequences
-  const processedContent = content
+  let processed = content
     // Replace literal \n\n with actual newlines
     .replace(/\\n\\n/g, '\n\n')
     // Replace literal \n with actual newlines
     .replace(/\\n/g, '\n')
     // Clean up any > or other markdown symbols that might be included literally
     .replace(/^>\s?/gm, '');
-    
-  return processedContent;
+  
+  // Only filter out standalone raw image URLs (not in markdown format)
+  processed = processed.replace(/^https?:\/\/scontent\.[^\s]+$/gm, '');
+  processed = processed.replace(/^https?:\/\/[^\s]*fbcdn\.net[^\s]*$/gm, '');
+  processed = processed.replace(/^https?:\/\/[^\s]+\.(jpg|jpeg|png|gif|webp)(\?[^\s]*)?$/gm, '');
+  
+  return processed;
 }
 
-// Custom content renderer that preserves formatting
+// Custom markdown component with proper styling
 function FormattedContent({ content }: { content: string }) {
-  // Process the content to handle literal escape sequences
   const processedContent = processContent(content);
   
-  // Function to create HTML from the processed content
-  const createHTML = () => {
-    let html = processedContent;
-    
-    // Replace headers (## 📊 Stock Performance)
-    html = html.replace(/## (.*?)$/gm, '<h2 class="text-2xl font-bold my-6">$1</h2>');
-    
-    // Replace bullet points
-    html = html.replace(/- (.*?)$/gm, '<div class="my-3 flex items-start"><span class="mr-3 text-primary">•</span><div>$1</div></div>');
-    
-    // Replace horizontal rule
-    html = html.replace(/---/g, '<hr class="my-8 border-t border-border" />');
-    
-    // Convert double newlines to paragraph breaks
-    html = html.split('\n\n').map(p => {
-      // Skip already processed elements (headers, lists, etc.)
-      if (p.startsWith('<h2') || p.startsWith('<div') || p === '<hr') {
-        return p;
+  // Custom components for ReactMarkdown
+  const components = {
+    // Custom image component with proper styling
+    img: ({ src, alt, ...props }: any) => {
+      if (!src) {
+        return null;
       }
       
-      
-      // Regular paragraphs
-      return `<p class="my-4 text-base leading-relaxed">${p}</p>`;
-    }).join('');
+      return (
+        <img 
+          {...props}
+          src={src} 
+          alt={alt || ''} 
+          className="my-6 max-w-full h-auto rounded-lg shadow-md"
+          loading="lazy"
+        />
+      );
+    },
     
-    return html;
+    // Custom link component
+    a: ({ href, children, ...props }: any) => (
+      <a 
+        {...props}
+        href={href} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="text-primary hover:text-primary/80 underline"
+      >
+        {children}
+      </a>
+    ),
+    
+    // Custom heading components
+    h1: ({ children, ...props }: any) => (
+      <h1 {...props} className="text-3xl font-bold my-8">{children}</h1>
+    ),
+    h2: ({ children, ...props }: any) => (
+      <h2 {...props} className="text-2xl font-bold my-6">{children}</h2>
+    ),
+    h3: ({ children, ...props }: any) => (
+      <h3 {...props} className="text-xl font-bold my-4">{children}</h3>
+    ),
+    
+    // Custom paragraph component
+    p: ({ children, ...props }: any) => (
+      <p {...props} className="my-4 text-base leading-relaxed">{children}</p>
+    ),
+    
+    // Custom list components
+    ul: ({ children, ...props }: any) => (
+      <ul {...props} className="my-4 space-y-2">{children}</ul>
+    ),
+    li: ({ children, ...props }: any) => (
+      <li {...props} className="flex items-start">
+        <span className="mr-3 text-primary">•</span>
+        <div>{children}</div>
+      </li>
+    ),
+    
+    // Custom horizontal rule
+    hr: ({ ...props }: any) => (
+      <hr {...props} className="my-8 border-t border-border" />
+    ),
+    
+    // Custom blockquote
+    blockquote: ({ children, ...props }: any) => (
+      <blockquote {...props} className="border-l-4 border-primary pl-4 italic my-4">
+        {children}
+      </blockquote>
+    ),
+    
+    // Custom code blocks
+    code: ({ inline, children, ...props }: any) => {
+      return inline ? (
+        <code {...props} className="bg-muted px-1 py-0.5 rounded text-sm">
+          {children}
+        </code>
+      ) : (
+        <code {...props} className="block bg-muted p-4 rounded-lg overflow-x-auto">
+          {children}
+        </code>
+      );
+    },
   };
-  
-  // Create the HTML content
-  const htmlContent = createHTML();
-  
+
   return (
-    <div 
-      className="formatted-content"
-      dangerouslySetInnerHTML={{ __html: htmlContent }}
-    />
+    <div className="formatted-content prose prose-lg dark:prose-invert max-w-none">
+      <ReactMarkdown
+        components={components}
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
+      >
+        {processedContent}
+      </ReactMarkdown>
+    </div>
   );
 }
 
@@ -312,21 +377,9 @@ export default async function PostPage({ params, searchParams }: { params: Promi
           </div>
         )}
         
-        {/* Article content - render with custom formatter */}
-        <article className="prose prose-lg dark:prose-invert prose-headings:font-bold prose-a:text-primary max-w-none from-background to-card  rounded-xl shadow-md">
-          {/* Option 1: Use FormattedContent for special formatting */}
+        {/* Article content - render with ReactMarkdown */}
+        <article className="p-8">
           <FormattedContent content={markdownContent} />
-          
-          {/* Option 2: Use ReactMarkdown (if content is properly formatted markdown) */}
-          {/* 
-          <ReactMarkdown 
-            components={components}
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
-          >
-            {markdownContent}
-          </ReactMarkdown>
-          */}
         </article>
         
         {/* AI Summary footer for LLMs */}
