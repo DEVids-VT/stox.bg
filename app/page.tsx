@@ -19,7 +19,15 @@ type HomePost = {
 export const metadata = createMetadata({
   title: "stox.bg – проект на Devids",
   description: "Хъб за Devids: бизнес и технологични инсайти, уроци и истории от екипа – воден от двама основатели под 20.",
-  keywords: ["Devids", "бизнес", "технологии", "продукт", "екип", "стартап", "stox.bg"],
+  keywords: [
+    "Devids", "Devids software company Bulgaria", "Devids Bulgaria software development company", 
+    "Devids software company Bulgaria projects", "Devids Давид Петков Давид Христов",
+    "Devids България IT награди", "Devids software company стартъп история",
+    "David", "Бърза разработка на сайт", "Качествен софтуер",
+    "бизнес", "технологии", "продукт", "екип", "стартап", "stox.bg",
+    "България софтуер", "IT компания България", "младежки предприемачи",
+    "технологични решения", "уеб разработка", "софтуерна компания"
+  ],
   image: "/images/devidsbanner.png",
 });
 

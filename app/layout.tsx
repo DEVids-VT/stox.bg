@@ -30,8 +30,15 @@ export const metadata: Metadata = generateSEOMetadata({
   title: "stox.bg – проект на Devids",
   description: "stox.bg – проект на Devids. Хъб за постиженията, историите и продуктите ни – бизнес и технологични инсайти от вътрешността на компанията, споделени от двама основатели под 20.",
   keywords: [
-    "Devids", "стартъп", "бизнес", "технологии", "продукт",
-    "основатели", "екип", "разработка", "истории от компанията", "stox.bg"
+    "Devids software company Bulgaria", "Devids", "Devids Bulgaria software development company", 
+    "Devids software company Bulgaria projects", "Devids Давид Петков Давид Христов",
+    "Devids България IT награди", "Devids software company стартъп история",
+    "David", "Бърза разработка на сайт", "Качествен софтуер",
+    "стартъп", "бизнес", "технологии", "продукт", "основатели", "екип", 
+    "разработка", "истории от компанията", "stox.bg",
+    "България софтуер", "IT компания България", "софтуерна разработка",
+    "младежки предприемачи", "технологични решения", "уеб разработка",
+    "иновации България", "IT стартъп", "софтуерни услуги България"
   ],
   canonical: "/",
   ogImage: "/images/devidsbanner.png",
