@@ -37,15 +37,6 @@ export default function LegalPage() {
           <section>
             <h2 className="text-2xl font-bold mb-4">2. Какви данни събираме</h2>
             
-            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
-              <p className="mb-2">
-                <strong>Важно:</strong> stox.bg не събира автоматично лични данни и не използва бисквитки за проследяване.
-              </p>
-              <p className="text-sm">
-                Не използваме Google Analytics, Facebook Pixel или други инструменти за проследяване на потребителите.
-              </p>
-            </div>
-
             <h3 className="text-xl font-semibold mb-3">2.1 Доброволно предоставени данни</h3>
             <p>Събираме данни само когато вие доброволно ги споделите с нас:</p>
             <ul className="space-y-2 mt-4">
@@ -54,7 +45,30 @@ export default function LegalPage() {
               <li>Съобщения, изпратени чрез формата за контакт</li>
             </ul>
 
-            <h3 className="text-xl font-semibold mb-3 mt-6">2.2 Технически данни</h3>
+            <h3 className="text-xl font-semibold mb-3 mt-6">2.2 Автоматично събирани данни чрез Google Analytics</h3>
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
+              <p className="mb-2">
+                <strong>Важно:</strong> Използваме Google Analytics за анализ на трафика и подобряване на потребителското изживяване. 
+                Аналитичните бисквитки са активирани по подразбиране, но можете да ги откажете по всяко време.
+              </p>
+            </div>
+            
+            <p>Чрез Google Analytics събираме следните данни:</p>
+            <ul className="space-y-2 mt-4">
+              <li><strong>Географски данни:</strong> Страна, регион, град (приблизително местоположение)</li>
+              <li><strong>Поведенчески данни:</strong> Посетени страници, време на престой, източник на трафика</li>
+              <li><strong>Технически данни:</strong> Тип устройство, браузър, операционна система</li>
+              <li><strong>Интерактивни данни:</strong> Кликвания върху елементи, скролиране, навигация</li>
+              <li><strong>Сесийни данни:</strong> Продължителност на сесията, брой посещения</li>
+              <li><strong>Демографски данни:</strong> Възраст и пол (когато са достъпни)</li>
+            </ul>
+            
+            <p className="text-sm text-muted-foreground mt-4">
+              Тези данни се използват за разбиране на предпочитанията на потребителите, 
+              подобряване на съдържанието и оптимизиране на функционалността на сайта.
+            </p>
+
+            <h3 className="text-xl font-semibold mb-3 mt-6">2.3 Технически данни</h3>
             <p>Нашият хостинг доставчик (Vercel) може да съхранява основни сървърни логове за сигурност, включващи:</p>
             <ul className="space-y-2 mt-2">
               <li>IP адрес (само за защита срещу злоупотреби)</li>
@@ -68,15 +82,17 @@ export default function LegalPage() {
 
           <section>
             <h2 className="text-2xl font-bold mb-4">3. Как използваме данните</h2>
-            <p>Използваме събраните данни единствено за:</p>
+            <p>Използваме събраните данни за:</p>
             <ul className="space-y-2">
               <li><strong>Комуникация:</strong> Отговори на запитвания и поддръжка</li>
               <li><strong>Бюлетин:</strong> Изпращане на съдържание (само при изрично съгласие)</li>
-              <li><strong>Сигурност:</strong> Защита срещу злоупотреби и спам (чрез Vercel логове)</li>
+              <li><strong>Анализ на трафика:</strong> Разбиране на поведението на потребителите чрез Google Analytics</li>
+              <li><strong>Подобряване на услугите:</strong> Оптимизиране на съдържанието и функционалността</li>
+              <li><strong>Сигурност:</strong> Защита срещу злоупотреби и спам</li>
               <li><strong>Правни изисквания:</strong> Спазване на законовите задължения</li>
             </ul>
             <p className="mt-4 text-sm text-muted-foreground">
-              Не използваме данните за реклама, профилиране или продажба на трети страни.
+              Не използваме данните за персонализирана реклама или продажба на трети страни.
             </p>
           </section>
 
@@ -85,11 +101,11 @@ export default function LegalPage() {
             <div className="grid gap-4">
               <div className="border border-border rounded-lg p-4">
                 <h4 className="font-semibold mb-2">Съгласие (чл. 6, ал. 1, буква a от GDPR)</h4>
-                <p className="text-sm">За абониране за бюлетин и маркетингови комуникации</p>
+                <p className="text-sm">За абониране за бюлетин, маркетингови комуникации и използване на Google Analytics</p>
               </div>
               <div className="border border-border rounded-lg p-4">
                 <h4 className="font-semibold mb-2">Законен интерес (чл. 6, ал. 1, буква f от GDPR)</h4>
-                <p className="text-sm">За отговаряне на запитвания и осигуряване на сигурност</p>
+                <p className="text-sm">За отговаряне на запитвания, осигуряване на сигурност и подобряване на услугите</p>
               </div>
             </div>
           </section>
@@ -100,11 +116,12 @@ export default function LegalPage() {
             
             <h3 className="text-xl font-semibold mb-3">5.1 Доставчици на услуги</h3>
             <ul className="space-y-2">
+              <li><strong>Google Analytics:</strong> Анализ на трафика и поведението на потребителите</li>
               <li><strong>Vercel:</strong> Хостинг на уебсайта (основни сървърни логове)</li>
               <li><strong>Supabase:</strong> База данни за съхранение на контактна информация</li>
             </ul>
             <p className="text-sm text-muted-foreground mt-2">
-              Не използваме Google Analytics, Facebook Pixel или други инструменти за проследяване.
+              Google Analytics може да използва данните в съответствие със собствената си политика за поверителност.
             </p>
 
             <h3 className="text-xl font-semibold mb-3 mt-6">5.2 Правни изисквания</h3>
@@ -177,13 +194,51 @@ export default function LegalPage() {
 
           <section>
             <h2 className="text-2xl font-bold mb-4">9. Бисквитки (Cookies)</h2>
-            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
               <p className="mb-2">
-                <strong>Добра новина:</strong> stox.bg не използва бисквитки за проследяване или анализ.
+                <strong>Важно:</strong> stox.bg използва бисквитки за подобряване на потребителското изживяване и анализ на трафика.
               </p>
+            </div>
+
+            <h3 className="text-xl font-semibold mb-3">9.1 Видове бисквитки</h3>
+            
+            <div className="space-y-4">
+              <div className="border border-border rounded-lg p-4">
+                <h4 className="font-semibold mb-2">Задължителни бисквитки</h4>
+                <p className="text-sm mb-2">Необходими за основното функциониране на сайта:</p>
+                <ul className="text-sm space-y-1">
+                  <li>• Съхранение на темата (светла/тъмна)</li>
+                  <li>• Съхранение на езиковите предпочитания</li>
+                  <li>• Сесийни бисквитки за сигурност</li>
+                </ul>
+              </div>
+              
+              <div className="border border-border rounded-lg p-4">
+                <h4 className="font-semibold mb-2">Аналитични бисквитки (Google Analytics)</h4>
+                <p className="text-sm mb-2">Използват се за анализ на трафика и поведението:</p>
+                <ul className="text-sm space-y-1">
+                  <li>• _ga - идентифициране на уникални потребители</li>
+                  <li>• _ga_* - съхранение на състоянието на сесията</li>
+                  <li>• _gid - разграничаване на потребители и сесии</li>
+                </ul>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Тези бисквитки са активирани по подразбиране, но могат да бъдат отказани по всяко време.
+                </p>
+              </div>
+            </div>
+
+            <h3 className="text-xl font-semibold mb-3 mt-6">9.2 Управление на бисквитките</h3>
+            <p className="mb-4">Можете да управлявате бисквитките по следните начини:</p>
+            <ul className="space-y-2">
+              <li>• Чрез банера за съгласие при първо посещение</li>
+              <li>• Чрез настройките на вашия браузър</li>
+              <li>• Чрез изтриване на съществуващите бисквитки</li>
+            </ul>
+            
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mt-4">
               <p className="text-sm">
-                Вашата поверителност е защитена - не съхраняваме информация във вашия браузър и 
-                не проследяваме дейността ви на сайта.
+                <strong>Забележка:</strong> Отказването на аналитичните бисквитки няма да повлияе на функционалността на сайта, 
+                но може да ограничи нашата способност да подобряваме услугите.
               </p>
             </div>
           </section>
@@ -228,8 +283,8 @@ export default function LegalPage() {
 
           <div className="bg-card border border-border rounded-lg p-6 text-center">
             <p className="text-sm text-muted-foreground mb-0">
-              Благодарим ви за доверието! stox.bg е изграден с фокус върху поверителността - 
-              събираме минимум данни и не ви проследяваме.
+              Благодарим ви за доверието! stox.bg събира данни отговорно и прозрачно - 
+              използваме ги единствено за подобряване на вашето изживяване и услугите ни.
             </p>
           </div>
         </div>

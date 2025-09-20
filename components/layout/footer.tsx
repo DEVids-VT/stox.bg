@@ -4,7 +4,7 @@ import Image from 'next/image';
 const navigation = {
   main: [
     { name: 'Общи условия', href: '/terms' },
-    { name: 'Правна информация', href: '/legal' },
+    { name: 'Политика за поверителност', href: '/legal' },
   ],
   social: [
     {
