@@ -8,7 +8,7 @@ import { Loader2, CheckCircle, XCircle, Globe, Search } from 'lucide-react';
 
 export function IndexingPanel() {
   const [url, setUrl] = useState('');
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<{ multiple?: Array<{ url: string; results: { google?: { success: boolean; error?: string }; bing?: { success: boolean; error?: string } } }>; results?: { google?: { success: boolean; error?: string }; bing?: { success: boolean; error?: string } } } | null>(null);
   const { submitUrl, submitMultiple, loading, error } = useIndexing();
 
   const handleSubmitSingle = async () => {
@@ -24,7 +24,7 @@ export function IndexingPanel() {
     setResults({ multiple: results });
   };
 
-  const renderResult = (service: string, result: any) => {
+  const renderResult = (service: string, result: { success: boolean; error?: string } | undefined) => {
     if (!result) return null;
     
     return (
@@ -128,7 +128,7 @@ export function IndexingPanel() {
           {results.multiple ? (
             // Multiple URL results
             <div className="space-y-2">
-              {results.multiple.map((result: any, index: number) => (
+              {results.multiple.map((result: { url: string; results: { google?: { success: boolean; error?: string }; bing?: { success: boolean; error?: string } } }, index: number) => (
                 <div key={index} className="border border-border rounded-lg p-4">
                   <div className="font-medium text-sm mb-2">{result.url}</div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -141,8 +141,8 @@ export function IndexingPanel() {
           ) : (
             // Single URL results
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {results.results.google && renderResult('Google', results.results.google)}
-              {results.results.bing && renderResult('Bing', results.results.bing)}
+              {results.results?.google && renderResult('Google', results.results.google)}
+              {results.results?.bing && renderResult('Bing', results.results.bing)}
             </div>
           )}
         </div>

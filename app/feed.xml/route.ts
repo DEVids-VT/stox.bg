@@ -1,10 +1,10 @@
 import { createSupabaseClient } from '@/lib/supabase';
 import RSS from 'rss';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export const revalidate = 3600; // Revalidate every hour
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://stox.bg';
     

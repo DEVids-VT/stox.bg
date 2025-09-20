@@ -59,17 +59,23 @@ export function CookieConsent() {
     // Enable/disable Google Analytics based on consent
     if (prefs.analytics) {
       // Enable Google Analytics
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('consent', 'update', {
-          analytics_storage: 'granted'
-        });
+      if (typeof window !== 'undefined') {
+        const windowWithGtag = window as Window & { gtag?: (...args: unknown[]) => void };
+        if (windowWithGtag.gtag) {
+          windowWithGtag.gtag('consent', 'update', {
+            analytics_storage: 'granted'
+          });
+        }
       }
     } else {
       // Disable Google Analytics
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('consent', 'update', {
-          analytics_storage: 'denied'
-        });
+      if (typeof window !== 'undefined') {
+        const windowWithGtag = window as Window & { gtag?: (...args: unknown[]) => void };
+        if (windowWithGtag.gtag) {
+          windowWithGtag.gtag('consent', 'update', {
+            analytics_storage: 'denied'
+          });
+        }
       }
     }
   };

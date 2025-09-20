@@ -10,7 +10,7 @@ import {
   extractKeywordsBG,
 } from '@/lib/seo/utils';
 import { ShareButton } from '@/components/fastlane/ShareButton';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 
@@ -110,16 +110,17 @@ function FormattedContent({ content }: { content: string }) {
   // Custom components for ReactMarkdown
   const components = {
     // Custom image component with proper styling
-    img: ({ src, alt, ...props }: any) => {
+    img: ({ src, alt }: { src?: string; alt?: string }) => {
       if (!src) {
         return null;
       }
       
       return (
-        <img 
-          {...props}
+        <Image 
           src={src} 
           alt={alt || ''} 
+          width={800}
+          height={600}
           className="my-6 max-w-full h-auto rounded-lg shadow-md"
           loading="lazy"
         />
@@ -127,7 +128,7 @@ function FormattedContent({ content }: { content: string }) {
     },
     
     // Custom link component
-    a: ({ href, children, ...props }: any) => (
+    a: ({ href, children, ...props }: { href?: string; children?: React.ReactNode; [key: string]: unknown }) => (
       <a 
         {...props}
         href={href} 
@@ -140,26 +141,26 @@ function FormattedContent({ content }: { content: string }) {
     ),
     
     // Custom heading components
-    h1: ({ children, ...props }: any) => (
+    h1: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
       <h1 {...props} className="text-3xl font-bold my-8">{children}</h1>
     ),
-    h2: ({ children, ...props }: any) => (
+    h2: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
       <h2 {...props} className="text-2xl font-bold my-6">{children}</h2>
     ),
-    h3: ({ children, ...props }: any) => (
+    h3: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
       <h3 {...props} className="text-xl font-bold my-4">{children}</h3>
     ),
     
     // Custom paragraph component
-    p: ({ children, ...props }: any) => (
+    p: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
       <p {...props} className="my-4 text-base leading-relaxed">{children}</p>
     ),
     
     // Custom list components
-    ul: ({ children, ...props }: any) => (
+    ul: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
       <ul {...props} className="my-4 space-y-2">{children}</ul>
     ),
-    li: ({ children, ...props }: any) => (
+    li: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
       <li {...props} className="flex items-start">
         <span className="mr-3 text-primary">•</span>
         <div>{children}</div>
@@ -167,19 +168,19 @@ function FormattedContent({ content }: { content: string }) {
     ),
     
     // Custom horizontal rule
-    hr: ({ ...props }: any) => (
+    hr: ({ ...props }: { [key: string]: unknown }) => (
       <hr {...props} className="my-8 border-t border-border" />
     ),
     
     // Custom blockquote
-    blockquote: ({ children, ...props }: any) => (
+    blockquote: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
       <blockquote {...props} className="border-l-4 border-primary pl-4 italic my-4">
         {children}
       </blockquote>
     ),
     
     // Custom code blocks
-    code: ({ inline, children, ...props }: any) => {
+    code: ({ inline, children, ...props }: { inline?: boolean; children?: React.ReactNode; [key: string]: unknown }) => {
       return inline ? (
         <code {...props} className="bg-muted px-1 py-0.5 rounded text-sm">
           {children}
@@ -195,7 +196,7 @@ function FormattedContent({ content }: { content: string }) {
   return (
     <div className="formatted-content prose prose-lg dark:prose-invert max-w-none">
       <ReactMarkdown
-        components={components}
+        components={components as Components}
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
       >
