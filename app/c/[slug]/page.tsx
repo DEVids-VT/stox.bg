@@ -379,7 +379,7 @@ export default async function PostPage({ params, searchParams }: { params: Promi
         )}
         
         {/* Article content - render with ReactMarkdown */}
-        <article className="p-8">
+        <article>
           <FormattedContent content={markdownContent} />
         </article>
         
