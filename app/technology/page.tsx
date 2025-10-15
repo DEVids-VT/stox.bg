@@ -2,6 +2,10 @@ import { createSupabaseClient } from '@/lib/supabase';
 import { generateSEOMetadata } from '@/lib/seo/utils';
 import { CategoryFeed } from '@/components/fastlane/CategoryFeed';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
+
 export const metadata = generateSEOMetadata({
   title: 'Технологии',
   description: 'Публикации за инженерни практики, архитектури и продуктова разработка от екипа на Devids.',

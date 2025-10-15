@@ -73,6 +73,24 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        source: '/business',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, max-age=0'
+          }
+        ]
+      },
+      {
+        source: '/technology',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, max-age=0'
+          }
+        ]
+      },
+      {
         source: '/api/(.*)',
         headers: [
           {
