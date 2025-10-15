@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { createMetadata } from "@/lib/seo/metadata";
 import { createSupabaseClient } from '@/lib/supabase';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
+
 type HomePost = {
   id: number;
   title: string;
